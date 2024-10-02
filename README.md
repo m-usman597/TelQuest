@@ -28,7 +28,7 @@ Install the project with pip
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/m-usman597/TelQuest.git
 ```
 
 Go to the project directory
