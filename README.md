@@ -4,6 +4,14 @@ A brief description of what this project does: This API interacts with OpenAI's 
 
 ## Installation
 
+Creating a virtual environment
+
+```bash
+  python -m venv myenv
+  myenv/Scripts?Activate
+  ```
+
+
 Install the project with pip
 
 ```bash
