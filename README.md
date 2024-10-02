@@ -9,7 +9,7 @@ Install the project with pip
 ```bash
   pip install -r requirements.txt
   cd <project_directory>
-
+```
 ## Features
 - Threaded Conversations using OpenAI
 - Multiple Assistants with Private Access
