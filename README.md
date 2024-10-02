@@ -8,7 +8,7 @@ Creating a virtual environment
 
 ```bash
   python -m venv myenv
-  myenv/Scripts?Activate
+  myenv/Scripts/Activate
   ```
 
 
