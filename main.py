@@ -52,7 +52,7 @@ class UserInput(BaseModel):
 
 
 # Root endpoint
-@app.get("/")
+@app.get("/api/")
 async def read_root():
     return {"message": "Welcome to the OpenAI Threaded Assistant API!"}
 
@@ -61,7 +61,7 @@ async def read_root():
 # ... [rest of your code remains unchanged]
 
 # POST endpoint to handle user input and interact with OpenAI threads
-@app.post("/ask")
+@app.post("/api/ask")
 async def ask_openai(user_input: UserInput):
     try:
         # Check if the session exists, if not, create a new thread
