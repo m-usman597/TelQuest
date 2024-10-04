@@ -15,14 +15,9 @@ api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
 # Initializing
-
 bob_asstnt = "asst_AOeSXteKtNbyPAcb0ZPQiLZJ"
 private_bob_asstnt = "asst_JWrQIE1b2lNim96pVXr3cCNj"
-
 gate_pwd = "973808"
-
-
-
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -30,7 +25,8 @@ app = FastAPI(
     description="API for interacting with OpenAI threaded assistant",
     version="1.0.0"
 )
-    # Allowing CORS
+
+# Allowing CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -39,26 +35,18 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
-# In-memory store for session/thread data (for demonstration purposes)
-# In a real application, this would be replaced with a database or a persistent store.
+# In-memory store for session/thread data
 threads_store = {}
-
 
 # Pydantic model for user input in POST request
 class UserInput(BaseModel):
     session_id: str  # The session ID to track conversation threads
     user_input: str
 
-
 # Root endpoint
 @app.get("/api/")
 async def read_root():
     return {"message": "Welcome to the OpenAI Threaded Assistant API!"}
-
-
-# POST endpoint to handle user input and interact with OpenAI threads
-# ... [rest of your code remains unchanged]
 
 # POST endpoint to handle user input and interact with OpenAI threads
 @app.post("/api/ask")
@@ -69,10 +57,17 @@ async def ask_openai(user_input: UserInput):
             # Create a new thread for the session
             Chat = client.beta.threads.create(messages=[])
             thread_id = Chat.id
-            threads_store[user_input.session_id] = thread_id
+            # Initialize the session data
+            session_data = {
+                'thread_id': thread_id,
+                'use_private_assistant': False
+            }
+            threads_store[user_input.session_id] = session_data
             print(f"New Thread Created for session {user_input.session_id}: {thread_id}")
         else:
-            thread_id = threads_store[user_input.session_id]
+            # Retrieve the session data
+            session_data = threads_store[user_input.session_id]
+            thread_id = session_data['thread_id']
             print(f"Continuing Thread for session {user_input.session_id}: {thread_id}")
 
         # Append the user's message to the thread
@@ -82,8 +77,13 @@ async def ask_openai(user_input: UserInput):
             content=user_input.user_input
         )
 
-        # Determine which assistant ID to use based on the presence of gate_pwd
+        # If gate_pwd is in user_input, set use_private_assistant to True
         if gate_pwd in user_input.user_input:
+            session_data['use_private_assistant'] = True
+            print(f"Gate password detected. Session {user_input.session_id} elevated to use private assistant.")
+
+        # Determine which assistant ID to use based on the session's 'use_private_assistant' flag
+        if session_data['use_private_assistant']:
             assist_id = private_bob_asstnt
             print(f"Using Private-Bob bot for session {user_input.session_id}")
         else:
@@ -111,7 +111,3 @@ async def ask_openai(user_input: UserInput):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-
- 
