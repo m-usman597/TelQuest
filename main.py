@@ -22,7 +22,7 @@ gate_pwd = "973808"
 # Initialize FastAPI app
 app = FastAPI(
     title="OpenAI Threaded Assistant",
-    description="API for interacting with OpenAI threaded assistant   updated v2 ",
+    description="API for interacting with OpenAI threaded assistant ",
     version="1.0.0"
 )
 
@@ -46,7 +46,7 @@ class UserInput(BaseModel):
 # Root endpoint
 @app.get("/api/")
 async def read_root():
-    return {"message": "Welcome to the OpenAI Threaded Assistant API!"}
+    return {"message": "Welcome to the OpenAI Threaded Assistant API! {new_version}"}
 
 # POST endpoint to handle user input and interact with OpenAI threads
 @app.post("/api/ask")
