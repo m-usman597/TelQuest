@@ -22,7 +22,7 @@ gate_pwd = "973808"
 # Initialize FastAPI app
 app = FastAPI(
     title="OpenAI Threaded Assistant",
-    description="API for interacting with OpenAI threaded assistant",
+    description="API for interacting with OpenAI threaded assistant   updated v2 ",
     version="1.0.0"
 )
 
